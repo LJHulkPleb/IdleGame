@@ -1136,7 +1136,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Feed Pet (Increase Health)
+  m_Text: Feed to Increase Health
 --- !u!222 &350560584
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1272,7 +1272,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Feed Pet (Increase Strength)
+  m_Text: Feed to Increase Strength
 --- !u!222 &425301652
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5336,7 +5336,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Feed Pet (Increase Defense)
+  m_Text: Feed to Increase Defense
 --- !u!222 &1764768771
 CanvasRenderer:
   m_ObjectHideFlags: 0
