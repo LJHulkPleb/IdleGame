@@ -5,9 +5,10 @@ using UnityEngine;
 public class Crop : ScriptableObject
 {
     public string cropName;
-    public int foodPerClick;
+    // public int foodPerClick;
     public int upgradeCost;
     public int currentLevel = 1;
+    public int foodPerSecond;
 
     private void OnEnable()
     {
@@ -16,7 +17,8 @@ public class Crop : ScriptableObject
 
     public void ResetValues()
     {
-        foodPerClick = 1;
+        // foodPerClick = 1;
         upgradeCost = 5;
+        foodPerSecond = 1;
     }
 }

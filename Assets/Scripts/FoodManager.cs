@@ -14,18 +14,19 @@ public class FoodManager : MonoBehaviour
     {
         UpdateFoodUI();
         UpdateUpgradeCostUI();
+        StartPassiveFoodGain();
     }
     private void Update()
     {
         UpdateFoodUI();
     }
-    public void produceFood(Crop crop)
-    {
-        Debug.Log("Button Clicked");
-        totalFood += crop.foodPerClick;
-        UpdateFoodUI();
-        Debug.Log("Total Amount of food now: " + totalFood);
-    }
+    // public void produceFood(Crop crop)
+    // {
+    //     Debug.Log("Button Clicked");
+    //     totalFood += crop.foodPerClick;
+    //     UpdateFoodUI();
+    //     Debug.Log("Total Amount of food now: " + totalFood);
+    // }
     private void UpdateFoodUI()
     {
         foodCountText.text = "Food: " + totalFood.ToString();
@@ -36,7 +37,8 @@ public class FoodManager : MonoBehaviour
         {
             totalFood -= crop.upgradeCost;
             crop.currentLevel++;
-            crop.foodPerClick += 1;
+            // crop.foodPerClick += 1;
+            crop.foodPerSecond += 1;
             crop.upgradeCost *= 2;
             UpdateFoodUI();
             UpdateUpgradeCostUI();
@@ -45,5 +47,21 @@ public class FoodManager : MonoBehaviour
     private void UpdateUpgradeCostUI()
     {
         upgradeCostText.text = "Upgrade Cost: " + crop.upgradeCost.ToString();
+    }
+
+    private void StartPassiveFoodGain()
+    {
+        StartCoroutine(PassiveFoodGain());
+    }
+
+    private IEnumerator PassiveFoodGain()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(1.5f);
+            totalFood += crop.foodPerSecond;
+            UpdateFoodUI();
+            Debug.Log("Total Amount of food now: " + totalFood);
+        }
     }
 }
