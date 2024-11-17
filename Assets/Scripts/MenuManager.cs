@@ -6,6 +6,7 @@ public class MenuManager : MonoBehaviour
 {
     public GameObject farmMenu;
     public GameObject petMenu;
+    public GameObject TournamentMenu;
     public GameObject FpsController;
     public Camera playerCamera;
     public float detectionRange = 5f;
@@ -13,17 +14,18 @@ public class MenuManager : MonoBehaviour
 
     private bool m_IsMenuOpen = false;
     private string m_CurrentTag;
-    private FirstPersonController M_FpsControllerScript;
+    private FirstPersonController m_FpsControllerScript;
 
 
     private void Start()
     {
         farmMenu.SetActive(false);
         petMenu.SetActive(false);
+        TournamentMenu.SetActive(false);
         ActionText.gameObject.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        M_FpsControllerScript = FpsController.GetComponent<FirstPersonController>();
+        m_FpsControllerScript = FpsController.GetComponent<FirstPersonController>();
     }
 
     private void Update()
@@ -49,7 +51,7 @@ public class MenuManager : MonoBehaviour
         {
             var tag = hit.collider.tag;
 
-            if (tag is "Farm" or "Pet")
+            if (tag is "Farm" or "Pet" or "Tournament")
             {
                 m_CurrentTag = tag;
                 ActionText.text = "Press E to interact with " + tag;
@@ -74,6 +76,10 @@ public class MenuManager : MonoBehaviour
         {
             ShowPetMenu();
         }
+        else if (m_CurrentTag == "Tournament")
+        {
+            ShowTournamentMenu();
+        }
 
         if (!string.IsNullOrEmpty(m_CurrentTag))
         {
@@ -81,7 +87,7 @@ public class MenuManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
 
-            M_FpsControllerScript.enabled = false;
+            m_FpsControllerScript.enabled = false;
         }
     }
 
@@ -91,6 +97,7 @@ public class MenuManager : MonoBehaviour
         farmMenu.SetActive(true);
         ActionText.gameObject.SetActive(false);
         petMenu.SetActive(false);
+        TournamentMenu.SetActive(false);
     }
 
     void ShowPetMenu()
@@ -98,6 +105,15 @@ public class MenuManager : MonoBehaviour
         farmMenu.SetActive(false);
         ActionText.gameObject.SetActive(false);
         petMenu.SetActive(true);
+        TournamentMenu.SetActive(false);
+    }
+
+    void ShowTournamentMenu()
+    {
+        farmMenu.SetActive(false);
+        ActionText.gameObject.SetActive(false);
+        petMenu.SetActive(false);
+        TournamentMenu.SetActive(true);
     }
 
     void CloseMenu()
@@ -107,12 +123,13 @@ public class MenuManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        M_FpsControllerScript.enabled = true;
+        m_FpsControllerScript.enabled = true;
     }
 
     void HideAllMenus()
     {
         farmMenu.SetActive(false);
         petMenu.SetActive(false);
+        TournamentMenu.SetActive(false);
     }
 }

@@ -11,6 +11,7 @@ public class PetMenuManager : MonoBehaviour
     public TMP_Text HealthText;
     public TMP_Text StrengthText;
     public TMP_Text DefenseText;
+    public TMP_Text SpeedText;
     
     public void UpdateStatsUI()
     {
