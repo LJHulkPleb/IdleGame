@@ -8,6 +8,7 @@ TagManager:
   - Pet
   - Farm
   - Tournament
+  - Interactable
   layers:
   - Default
   - TransparentFX
