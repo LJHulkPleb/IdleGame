@@ -9,7 +9,7 @@ public class TournamentManager : MonoBehaviour
 {
     public List<Tournament> UpcomingTournaments { get; private set; }
     public int NumOfTournaments = 5;
-    public int PlayerRank;
+    public int PlayerRank = 1;
     public PlayerPet PlayerPet;
     public OpponentPet OpponentPet;
     public GameObject OpponentPetPrefab;
@@ -21,28 +21,59 @@ public class TournamentManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GenerateUpcomingTournaments();
-        DisplayTournamentNotes();
-    }
-   
-    void GenerateUpcomingTournaments()
-    {
         UpcomingTournaments = new List<Tournament>();
-        for (int i = 0; i < NumOfTournaments; i++)
+        StartCoroutine(GenerateTournaments());
+    }
+
+    IEnumerator GenerateTournaments()
+    {
+        while (true)
         {
-            int randomRank = Random.Range(PlayerRank - 1, PlayerRank + 2);
-            randomRank = Mathf.Clamp(randomRank, 1, int.MaxValue);
-            Tournament newTournament = new Tournament(randomRank);//Change to random pet
-            UpcomingTournaments.Add(newTournament);
+            if (UpcomingTournaments.Count < NumOfTournaments)
+            {
+                foreach (Transform position in NoteSpawnPositions)
+                {
+                    if (position.childCount == 0)
+                    {
+                        yield return new WaitForSeconds(Random.Range(10, 20));
+                        AddNewTournament(position);
+                        break;
+                    }
+                }
+            }
+            yield return null;
         }
     }
 
-    void DisplayTournamentNotes()
+    void AddNewTournament(Transform position)
     {
-        for (int i = 0; i < UpcomingTournaments.Count && i < NoteSpawnPositions.Length; i++)
+        TournamentRank rank = (TournamentRank)Random.Range(PlayerRank, Mathf.Clamp(PlayerRank + 1, 1, System.Enum.GetValues(typeof(TournamentRank)).Length));
+        float timeToJoin = Random.Range(30, 60);
+        Tournament newTournament = new Tournament(rank, timeToJoin);
+        UpcomingTournaments.Add(newTournament);
+
+        DisplayTournamentNote(newTournament, position);
+
+        Debug.Log("New Tournament Added: " + newTournament.Rank + " with time left: " + newTournament.TimeLeft + "s");
+    }
+
+
+    void DisplayTournamentNote(Tournament tournament, Transform position)
+    {
+        GameObject note = Instantiate(NotePrefab, position.position, Quaternion.Euler(0, -90, 0), position);
+        note.GetComponent<TournamentNote>().Initialize(tournament, this);
+        StartCoroutine(RemoveTournamentAfterTimeout(note, tournament));
+    }
+
+    IEnumerator RemoveTournamentAfterTimeout(GameObject note, Tournament tournament)
+    {
+        yield return new WaitForSeconds(tournament.TimeToJoin);
+
+        if (UpcomingTournaments.Contains(tournament))
         {
-            GameObject note = Instantiate(NotePrefab, NoteSpawnPositions[i].position, Quaternion.Euler(0, -90, 0), NoteSpawnPositions[i]);
-            note.GetComponent<TournamentNote>().Initialize(UpcomingTournaments[i], this);
+            Debug.Log("Tournament Expired: " + tournament.Rank);
+            UpcomingTournaments.Remove(tournament);
+            Destroy(note);
         }
     }
 
@@ -61,7 +92,7 @@ public class TournamentManager : MonoBehaviour
 
     IEnumerator ExecuteTournament(Tournament tournamentIndex)
     {
-        yield return new WaitForSeconds(2f); 
+        yield return new WaitForSeconds(2f);
 
         SetUpOpponent(tournamentIndex);
 
@@ -73,9 +104,6 @@ public class TournamentManager : MonoBehaviour
         {
             ExecuteAttack(attacker, defender);
             yield return new WaitForSeconds(1f);
-
-            // Swap attacker and defender for next turn
-            //(attacker, defender) = (defender, attacker);
 
             Pet temp = attacker;
             attacker = defender;
@@ -94,9 +122,14 @@ public class TournamentManager : MonoBehaviour
 
     void SetUpOpponent(Tournament tournament)
     {
-        int opponentRank = tournament.Rank;
-        OpponentPet = new OpponentPet();
-        OpponentPet.Initialize(opponentRank);
+        if (m_CurrentOpponentPet != null)
+        {
+            Destroy(m_CurrentOpponentPet);
+        }
+        int opponentRank = (int)tournament.Rank;
+        m_CurrentOpponentPet = Instantiate(OpponentPetPrefab);
+        OpponentPet opponentPetComponent = m_CurrentOpponentPet.GetComponent<OpponentPet>();
+        opponentPetComponent.Initialize(opponentRank);
     }
 
     void ExecuteAttack(Pet attacker, Pet defender)
