@@ -29,10 +29,12 @@ public class PetController : MonoBehaviour
                 idleTimer = 0f;
             }
             animator.SetFloat("forward", 0.0f);
+            animator.SetBool("isIdle", false);
         }
         else
         {
             animator.SetFloat("forward", 1.0f); 
+            animator.SetBool("isIdle", true);
         }
     }
 

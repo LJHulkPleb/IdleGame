@@ -50,12 +50,12 @@ public class TournamentManager : MonoBehaviour
 
         int randomIndex = Random.Range(0, OpponentPetPrefabs.Count);
         GameObject selectedOpponentPrefab = OpponentPetPrefabs[randomIndex];
-        GameObject opponentPetObject = Instantiate(selectedOpponentPrefab);
-        Pet opponentPetComponent = opponentPetObject.GetComponent<Pet>();
-        opponentPetComponent.Initialize((int)rank);
+        //GameObject opponentPetObject = Instantiate(selectedOpponentPrefab);
+        //Pet opponentPetComponent = opponentPetObject.GetComponent<Pet>();
+        //opponentPetComponent.Initialize((int)rank);
 
         float timeToJoin = Random.Range(30, 60);
-        Tournament newTournament = new Tournament(rank, opponentPetComponent, timeToJoin);
+        Tournament newTournament = new Tournament(rank, null, timeToJoin); //need to change
         UpcomingTournaments.Add(newTournament);
 
         DisplayTournamentNote(newTournament, position);
@@ -79,7 +79,7 @@ public class TournamentManager : MonoBehaviour
             Debug.Log("Tournament Expired: " + tournament.Rank);
             UpcomingTournaments.Remove(tournament);
             Destroy(note);
-            Destroy(tournament.OpponentPet.gameObject);
+            //Destroy(tournament.OpponentPet.gameObject);
         }
     }
 
