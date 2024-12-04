@@ -1,40 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
+using Group3d.Notifications;
 using UnityEngine;
 
 public class TournamentNote : MonoBehaviour, IInteractable
 {
-    private Tournament Tournament;
-    private TournamentManager TournamentManager;
-    private MenuManager MenuManager;
+    private Tournament m_Tournament;
+    private TournamentManager m_TournamentManager;
+    private UIManager m_UiManager;
 
     public void Initialize(Tournament tournament, TournamentManager manager)
     {
-        Tournament = tournament;
-        TournamentManager = manager;
-        MenuManager = FindObjectOfType<MenuManager>();
+        m_Tournament = tournament;
+        m_TournamentManager = manager;
+        m_UiManager = FindObjectOfType<UIManager>();
     }
 
     public void Update()
     {
-        if (Tournament.TimeLeft > 0)
+        if (m_Tournament.TimeLeft > 0)
         {
-            Tournament.TimeLeft -= Time.deltaTime;
+            m_Tournament.TimeLeft -= Time.deltaTime;
         }
         else
         {
-            Tournament.TimeLeft = 0;
+            m_Tournament.TimeLeft = 0;
         }
     }
 
     public void OnLookAt()
     {
-        if (MenuManager != null)
+        if (m_UiManager != null)
         {
-            MenuManager.ShowInteractableInfo(
-                "Tournament Rank: " + Tournament.Rank.ToString().Insert(4, " "),
-                "\nTime Left: " + Tournament.TimeLeft.ToString("F0") + "s\n" +
-                "Press 'E' to sign up for this tournament."
+            m_UiManager.ShowInteractableInfo(
+                "Tournament Rank: " + m_Tournament.Rank.ToString().Insert(4, " "),
+                "\nTime Left: " + m_Tournament.TimeLeft.ToString("F0") + "s\n",
+                "Press 'E' to sign up for this tournament.",
+                "",
+                ""
             );
             Highlight(true);
         }
@@ -42,15 +45,10 @@ public class TournamentNote : MonoBehaviour, IInteractable
 
     public void OnInteract()
     {
-        if (MenuManager != null)
-        {
-            MenuManager.ShowInteractableInfo(
-                "Tournament Rank: " + Tournament.Rank,
-                "Signing up for tournament..."
-            );
-            TournamentManager.SignUpForTournament(Tournament);
-        }
+        Notifications.Send("Starting Tournament", NotificationType.Success, null);
+        m_TournamentManager.SignUpForTournament(m_Tournament);
     }
+
     private void Highlight(bool highlight)
     {
         Renderer renderer = GetComponentInChildren<Renderer>();
@@ -64,4 +62,7 @@ public class TournamentNote : MonoBehaviour, IInteractable
     {
         Highlight(false);
     }
+
+    public void OnSecondaryInteract() { }
+    public void OnTertiaryInteract() { }
 }

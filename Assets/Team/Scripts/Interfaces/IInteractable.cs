@@ -2,4 +2,7 @@
 {
     void OnLookAt();
     void OnInteract();
+    void OnSecondaryInteract();
+    void OnTertiaryInteract();
+
 }
