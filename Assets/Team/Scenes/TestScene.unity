@@ -27615,6 +27615,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: bearRig
       objectReference: {fileID: 0}
+    - target: {fileID: 5377725397220640091, guid: 0401fff4433a1314ca3d3f6ef0c43556, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -28377,6 +28381,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: bunnyRig
       objectReference: {fileID: 0}
+    - target: {fileID: 1812914787609092625, guid: 1777a023c69e5134b90fc4f592a4ef06, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -28619,6 +28627,10 @@ PrefabInstance:
     - target: {fileID: 6915307031500001533, guid: 7fe9c58719cf90c42aef58b8e2618681, type: 3}
       propertyPath: m_Name
       value: dragonRigged
+      objectReference: {fileID: 0}
+    - target: {fileID: 6915307031500001533, guid: 7fe9c58719cf90c42aef58b8e2618681, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
