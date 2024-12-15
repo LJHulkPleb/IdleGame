@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Group3d.Notifications;
 using UnityEngine;
+using TMPro;
 
 public class Farm : MonoBehaviour, IInteractable
 {
@@ -9,6 +10,9 @@ public class Farm : MonoBehaviour, IInteractable
     [SerializeField] private int m_CurrentCapacity = 0;
     [SerializeField] private int m_MaxCapacity = 10;
     [SerializeField] private int m_UpgradeCost = 20;
+
+    [SerializeField] private TMP_Text _statusText;
+    [SerializeField] private string cropName;
 
     public List<Crop> ListOfCrops;
 
@@ -28,6 +32,8 @@ public class Farm : MonoBehaviour, IInteractable
         }
         m_PlayerFoodManager = FindObjectOfType<PlayerFoodManager>();
         m_UiManager = FindObjectOfType<UIManager>();
+
+        UpdateStatusText();
 
         StartCoroutine(PassiveFoodGain());
     }
@@ -72,6 +78,8 @@ public class Farm : MonoBehaviour, IInteractable
             Debug.Log("Harvested " + CurrentCapacity + " units of " + CurrentCrop.CropName);
             CurrentCapacity = 0;
 
+            UpdateStatusText();
+
             StartCoroutine(PassiveFoodGain());
         }
         else
@@ -87,6 +95,8 @@ public class Farm : MonoBehaviour, IInteractable
             yield return new WaitForSeconds(1.5f);
             CurrentCapacity += 1;
             Debug.Log("Total Amount of food now: " + CurrentCapacity);
+
+            UpdateStatusText();
 
             if (CurrentCapacity >= MaxCapacity)
             {
@@ -122,10 +132,20 @@ public class Farm : MonoBehaviour, IInteractable
             int nextIndex = (currentIndex + 1) % ListOfCrops.Count;
             m_CurrentCrop = ListOfCrops[nextIndex];
             Debug.Log("Crop changed to: " + m_CurrentCrop.CropName);
+
+            UpdateStatusText();
         }
         else
         {
             Debug.Log("No crops available to change.");
+        }
+    }
+
+    private void UpdateStatusText()
+    {
+        if (m_CurrentCrop.CropName == cropName)
+        {
+            _statusText.text = m_CurrentCrop.CropName + ": " + CurrentCapacity + "/" + MaxCapacity;  
         }
     }
 }
