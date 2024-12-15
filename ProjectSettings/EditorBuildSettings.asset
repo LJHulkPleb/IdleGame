@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Team/Scenes/PickingStarterAnimalScene.unity
-    guid: 497c01c754c61454d849ce0d5c3417d5
+    path: Assets/Team/Scenes/PetSelectorScene.unity
+    guid: e432b36f894bce54887abfafcc927111
   - enabled: 1
     path: Assets/Team/Scenes/FarmScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
@@ -15,6 +15,12 @@ EditorBuildSettings:
     path: Assets/Team/Scenes/GladiatorArenaScene.unity
     guid: bcba8fc8823b64a42ba90002f34169d2
   - enabled: 1
+    path: Assets/Team/Scenes/BoxingScene.unity
+    guid: bba9f026b5151b645b0b130a8bed242c
+  - enabled: 0
     path: Assets/Team/Scenes/TournamentScene.unity
     guid: 7a5e87498c886ae4db4cc490b577ca8e
+  - enabled: 0
+    path: Assets/Team/Scenes/PickingStarterAnimalScene.unity
+    guid: 497c01c754c61454d849ce0d5c3417d5
   m_configObjects: {}

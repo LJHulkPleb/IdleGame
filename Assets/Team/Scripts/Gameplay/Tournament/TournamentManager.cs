@@ -50,6 +50,13 @@ public class TournamentManager : MonoBehaviour
                 StartCoroutine(GenerateTournaments());
             }
         }
+
+        if (NoteSpawnPositions != null && NoteSpawnPositions.Length != 0) return;
+        NoteSpawnPositions = FindObjectsOfType<Transform>()
+            .Where(t => t.CompareTag("NoteSpawnMarker"))
+            .ToArray();
+        Debug.Log($"Found and assigned {NoteSpawnPositions.Length} spawn positions dynamically.");
+
     }
 
     public void InitializeFromPreviousInstance(TournamentManager previousManager)
@@ -64,13 +71,24 @@ public class TournamentManager : MonoBehaviour
         if (UpcomingTournaments == null)
         {
             UpcomingTournaments = new List<Tournament>();
+        }
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        
+        if (NoteSpawnPositions != null && NoteSpawnPositions.Length > 0)
+        {
             StartCoroutine(GenerateTournaments());
         }
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        else
+        {
+            Debug.LogWarning("NoteSpawnPositions is not ready. Tournaments will not be generated.");
+        }
     }
+
 
     private IEnumerator GenerateTournaments()
     {
+        Debug.Log("Generating tournaments");
         while (true)
         {
             if (NoteSpawnPositions == null || NoteSpawnPositions.Length == 0)
@@ -184,15 +202,23 @@ public class TournamentManager : MonoBehaviour
             gameObject.SetActive(true);
 
             StartCoroutine(DelayedLinkSceneObjects());
+            StartCoroutine(DelayedGenerateTournaments());
+        }
+    }
+
+    private IEnumerator DelayedGenerateTournaments()
+    {
+        yield return new WaitForSeconds(0.1f);
+        if (NoteSpawnPositions != null && NoteSpawnPositions.Length > 0)
+        {
             StartCoroutine(GenerateTournaments());
         }
         else
         {
-            Debug.Log("Leaving FarmScene...");
-            gameObject.SetActive(false);
+            Debug.LogWarning("NoteSpawnPositions is not ready even after delay.");
         }
     }
-    
+
     private IEnumerator DelayedLinkSceneObjects()
     {
         yield return new WaitForSeconds(0.1f);
