@@ -2,11 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using TMPro;
 
 public class PlayerFoodManager : MonoBehaviour
 {
     public List<CropInfo> Crops = new List<CropInfo>();
 
+    [SerializeField] private TMP_Text _healthText;
+    [SerializeField] private TMP_Text _defenseText;
+    [SerializeField] private TMP_Text _strengthText;
+    [SerializeField] private TMP_Text _speedText;
+    [SerializeField] private TMP_Text _vitalisText;
+
+    private Dictionary<string, (TMP_Text textField, string prefix)> cropTextFields;
+
+    private void Start()
+    {
+        cropTextFields = new Dictionary<string, (TMP_Text, string)>
+        {
+            { "Health", (_healthText, "Health: ") },
+            { "Defense", (_defenseText, "Defense: ") },
+            { "Strength", (_strengthText, "Strength: ") },
+            { "Speed", (_speedText, "Speed: ") },
+            { "Vitalis", (_vitalisText, "Vitalis: ") }
+        };
+
+        UpdateCropTexts();
+    }
+    
     public void AddCrop(Crop crop, int amount)
     {
         CropInfo existingCrop = Crops.Find(c => c.Crop == crop);
@@ -19,6 +42,8 @@ public class PlayerFoodManager : MonoBehaviour
             Crops.Add(new CropInfo { Crop = crop, Amount = amount });
         }
         Debug.Log("Added " + amount + " units of " + crop.CropName + ". Current amount: " + Crops.Find(c => c.Crop == crop).Amount);
+
+        UpdateCropTexts();
     }
 
     public bool HasCrop(Crop crop, int requiredAmount)
@@ -44,6 +69,25 @@ public class PlayerFoodManager : MonoBehaviour
         else
         {
             Debug.Log("Not enough " + crop.CropName + " to use.");
+        }
+
+        UpdateCropTexts();
+    }
+
+    private void UpdateCropTexts()
+    {
+        foreach (var entry in cropTextFields.Values)
+        {
+            entry.textField.text = entry.prefix + "0";
+        }
+
+        foreach (var cropInfo in Crops)
+        {
+            if (cropTextFields.ContainsKey(cropInfo.Crop.CropName))
+            {
+                var (textField, prefix) = cropTextFields[cropInfo.Crop.CropName];
+                textField.text = prefix + cropInfo.Amount.ToString();
+            }
         }
     }
 }

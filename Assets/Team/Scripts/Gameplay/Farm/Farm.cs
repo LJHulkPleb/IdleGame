@@ -14,6 +14,9 @@ public class Farm : MonoBehaviour, IInteractable
     [SerializeField] private TMP_Text _statusText;
     [SerializeField] private string cropName;
 
+    [SerializeField] private AudioClip upgradeSound;
+    [SerializeField] private AudioClip harvestSound;
+
     public List<Crop> ListOfCrops;
 
     public Crop CurrentCrop { get => m_CurrentCrop; set => m_CurrentCrop = value; }
@@ -78,6 +81,8 @@ public class Farm : MonoBehaviour, IInteractable
             Debug.Log("Harvested " + CurrentCapacity + " units of " + CurrentCrop.CropName);
             CurrentCapacity = 0;
 
+            PlaySound(harvestSound);
+
             UpdateStatusText();
 
             StartCoroutine(PassiveFoodGain());
@@ -115,6 +120,8 @@ public class Farm : MonoBehaviour, IInteractable
             MaxCapacity += 5;
             UpgradeCost *= 2;
             Debug.Log("Farm upgraded! New max capacity: " + MaxCapacity);
+
+            PlaySound(upgradeSound);
         }
         else
         {
@@ -147,5 +154,12 @@ public class Farm : MonoBehaviour, IInteractable
         {
             _statusText.text = m_CurrentCrop.CropName + ": " + CurrentCapacity + "/" + MaxCapacity;  
         }
+    }
+
+    private void PlaySound(AudioClip clip)
+    {
+        AudioSource audioSource = GetComponent<AudioSource>();
+        audioSource.clip = clip;
+        audioSource.Play();
     }
 }
