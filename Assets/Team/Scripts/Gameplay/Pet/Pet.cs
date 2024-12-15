@@ -5,19 +5,9 @@ using UnityEngine.AI;
 
 public class Pet : MonoBehaviour, IInteractable
 {
-    [SerializeField] private int m_Strength = 1;
-    [SerializeField] private int m_Defense = 1;
-    [SerializeField] private int m_Health = 1;
-    [SerializeField] private int m_Speed = 1;
-    [SerializeField] private string m_Type = "Bear";
-    [SerializeField] private string m_PetName;
+    [SerializeField] private PetStats m_Stats;
 
-    public int Strength { get => m_Strength; set => m_Strength = value; }
-    public int Defense { get => m_Defense; set => m_Defense = value; }
-    public int Health { get => m_Health; set => m_Health = value; }
-    public int Speed { get => m_Speed; set => m_Speed = value; }
-    public string Type { get => m_Type; set => m_Type = value; }
-    public string PetName { get => m_PetName; set => m_PetName = value; }
+    public PetStats Stats { get => m_Stats; set => m_Stats = value; }
 
     private UIManager m_UiManager;
     private PlayerFoodManager m_FoodManager;
@@ -27,10 +17,6 @@ public class Pet : MonoBehaviour, IInteractable
 
     private void Start()
     {
-        if (string.IsNullOrEmpty(PetName))
-        { 
-            PetName = Type;
-        }
         m_UiManager = FindObjectOfType<UIManager>();
         m_FoodManager = FindObjectOfType<PlayerFoodManager>();
         m_PetController = GetComponent<PetController>();
@@ -42,18 +28,27 @@ public class Pet : MonoBehaviour, IInteractable
 
     }
 
-    public void Initialize(int rank)
+    public void Initialize(PetStats stats)
     {
-        Speed = Random.Range(rank * 5, rank * 10);
-        Strength = Random.Range(rank * 5, rank * 10);
-        Defense = Random.Range(rank * 3, rank * 7);
-        Health = Random.Range(rank * 10, rank * 20);
+        m_Stats = stats;
+    }
+
+    public void RandomInitialize(int rank)
+    {
+        m_Stats = new (
+             "Opponent",
+            Random.Range(rank * 5, rank * 10),
+            Random.Range(rank * 4, rank * 8),
+            Random.Range(rank * 20, rank * 40),
+            Random.Range(rank * 3, rank * 7),
+            "None"
+        );
+
+        Debug.Log($"Initialized Pet: Strength={m_Stats.Strength}, Defense={m_Stats.Defense}, Speed={m_Stats.Speed}, Health={m_Stats.Health}");
     }
 
     public void OnLookAt()
     {
-        Debug.Log("Looking at " + PetName);
-
         if (m_PetController != null)
         {
             m_PetController.enabled = false;
@@ -76,11 +71,8 @@ public class Pet : MonoBehaviour, IInteractable
         directionToPlayer.y = 0;
         transform.rotation = Quaternion.LookRotation(directionToPlayer);
         m_UiManager.ShowInteractableInfo(
-                  PetName.ToString(),
-                 "Strength " + Strength +
-                            "\nDefense " + Defense +
-                            "\nSpeed" + Speed +
-                            "\nHealth" + Health,
+            Stats.PetName.ToString(),
+            $"Strength: {Stats.Strength}\nDefense: {Stats.Defense}\nSpeed: {Stats.Speed} \nHealth {Stats.Health}",
                 "Press 'E' to feed" + m_CurrentCrop,
                   "Press 'Q' to change crop",
                   ""
@@ -90,21 +82,8 @@ public class Pet : MonoBehaviour, IInteractable
 
     public void OnInteract()
     {
-        if (m_FoodManager == null) return;
-        m_UiManager.ShowInteractableInfo(
-            "",
-            "",
-            "Feeding" + PetName,
-            "",
-            ""
-        );
-        Debug.Log("Feeding " + PetName);
-        if (m_CurrentCrop == null)
-        {
-            Debug.Log("No crop selected for feeding.");
-            return;
-        }
-
+        if (m_FoodManager == null || m_CurrentCrop == null) return;
+        
         Feed(m_CurrentCrop);
     }
 
@@ -115,11 +94,9 @@ public class Pet : MonoBehaviour, IInteractable
             int currentIndex = m_FoodManager.Crops.FindIndex(c => c.Crop == m_CurrentCrop);
             int nextIndex = (currentIndex + 1) % m_FoodManager.Crops.Count;
             m_CurrentCrop = m_FoodManager.Crops[nextIndex].Crop;
-            Debug.Log("Current crop for feeding changed to: " + m_CurrentCrop.CropName);
         }
         else
         {
-            Debug.Log("No crops available to change for feeding.");
         }
     }
     public void OnTertiaryInteract(){} //Maybe pet name change idk
@@ -129,18 +106,24 @@ public class Pet : MonoBehaviour, IInteractable
         CropInfo cropInfo = m_FoodManager.Crops.Find(c => c.Crop == crop);
         if (cropInfo == null || cropInfo.Amount < crop.UpgradeCost)
         {
-            Debug.Log("Not enough of " + crop.CropName + " to feed.");
             return;
         }
 
         m_FoodManager.UseCrop(crop, crop.UpgradeCost);
 
-        Strength += crop.AttributeBoosts[0].BoostAmount;
-        Defense += crop.AttributeBoosts[1].BoostAmount;
-        Speed += crop.AttributeBoosts[2].BoostAmount;
-        Health += crop.AttributeBoosts[3].BoostAmount;
+        Stats.Strength += crop.AttributeBoosts[0].BoostAmount;
+        Stats.Defense += crop.AttributeBoosts[1].BoostAmount;
+        Stats.Speed += crop.AttributeBoosts[2].BoostAmount;
+        Stats.Health += crop.AttributeBoosts[3].BoostAmount;
 
-        Debug.Log($"Fed {PetName} with {crop.CropName}. Stats updated: Strength={Strength}, Defense={Defense}, Speed={Speed}, Health={Health}");
+    }
+
+    public void Attack(Pet defender)
+    {
+        int damage = Stats.Strength - defender.Stats.Defense;
+        damage = damage > 0 ? damage : 1;
+        defender.Stats.Health -= damage;
+
     }
 
     private void Highlight(bool highlight)
@@ -173,14 +156,5 @@ public class Pet : MonoBehaviour, IInteractable
         {
             navMeshAgent.isStopped = false;
         }
-    }
-
-    public void Attack(Pet defender)
-    {
-        int damage = Strength - defender.Defense;
-        damage = damage > 0 ? damage : 1;
-        defender.Health -= damage;
-
-        Debug.Log($"{PetName} attacked {defender.PetName} for {damage} damage. {defender.PetName} now has {defender.Health} health.");
     }
 }

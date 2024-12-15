@@ -420,6 +420,7 @@ GameObject:
   m_Component:
   - component: {fileID: 889148326540849461}
   - component: {fileID: 5956798012946371105}
+  - component: {fileID: 8292231087938435186}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -456,3 +457,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Crops: []
+--- !u!114 &8292231087938435186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6729632629145370544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1272b085e7c73fe458e3095115a41652, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
