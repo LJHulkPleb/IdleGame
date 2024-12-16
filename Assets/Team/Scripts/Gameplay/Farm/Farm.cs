@@ -43,7 +43,6 @@ public class Farm : MonoBehaviour, IInteractable
 
     public void OnLookAt()
     {
-        Debug.Log("Looking at the farm growing: " + CurrentCrop.CropName);
 
         if (m_UiManager != null)
         {
@@ -78,7 +77,6 @@ public class Farm : MonoBehaviour, IInteractable
         if (CurrentCapacity > 0)
         {
             m_PlayerFoodManager.AddCrop(CurrentCrop, CurrentCapacity);
-            Debug.Log("Harvested " + CurrentCapacity + " units of " + CurrentCrop.CropName);
             CurrentCapacity = 0;
 
             PlaySound(harvestSound);
@@ -99,13 +97,11 @@ public class Farm : MonoBehaviour, IInteractable
         {
             yield return new WaitForSeconds(1.5f);
             CurrentCapacity += 1;
-            Debug.Log("Total Amount of food now: " + CurrentCapacity);
 
             UpdateStatusText();
 
             if (CurrentCapacity >= MaxCapacity)
             {
-                Debug.Log("Max capacity reached, stopping passive food gain.");
                 Notifications.Send("Farm (" + m_CurrentCrop.CropName + ") full!", NotificationType.Error, null);
                 yield break;
             }
@@ -122,6 +118,7 @@ public class Farm : MonoBehaviour, IInteractable
             Debug.Log("Farm upgraded! New max capacity: " + MaxCapacity);
 
             PlaySound(upgradeSound);
+
         }
         else
         {
@@ -141,6 +138,7 @@ public class Farm : MonoBehaviour, IInteractable
             Debug.Log("Crop changed to: " + m_CurrentCrop.CropName);
 
             UpdateStatusText();
+
         }
         else
         {
