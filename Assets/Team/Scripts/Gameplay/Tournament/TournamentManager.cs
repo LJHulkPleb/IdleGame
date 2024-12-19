@@ -51,13 +51,23 @@ public class TournamentManager : MonoBehaviour
             }
         }
 
-        if (NoteSpawnPositions != null && NoteSpawnPositions.Length != 0) return;
-        NoteSpawnPositions = FindObjectsOfType<Transform>()
-            .Where(t => t.CompareTag("NoteSpawnMarker"))
-            .ToArray();
-        Debug.Log($"Found and assigned {NoteSpawnPositions.Length} spawn positions dynamically.");
+        if (NoteSpawnPositions == null || NoteSpawnPositions.Length == 0)
+        {
+            NoteSpawnPositions = FindObjectsOfType<NoteSpawnMarker>()
+                .Select(marker => marker.transform)
+                .ToArray();
 
+            if (NoteSpawnPositions.Length == 0)
+            {
+                Debug.LogError("No NoteSpawnMarkers found in the scene. Tournament generation will not proceed.");
+            }
+            else
+            {
+                Debug.Log($"Found and assigned {NoteSpawnPositions.Length} spawn positions dynamically.");
+            }
+        }
     }
+
 
     public void InitializeFromPreviousInstance(TournamentManager previousManager)
     {
@@ -84,7 +94,6 @@ public class TournamentManager : MonoBehaviour
             Debug.LogWarning("NoteSpawnPositions is not ready. Tournaments will not be generated.");
         }
     }
-
 
     private IEnumerator GenerateTournaments()
     {
@@ -113,6 +122,7 @@ public class TournamentManager : MonoBehaviour
             yield return null;
         }
     }
+
     private void AddNewTournament(Transform position)
     {
         if (UpcomingTournaments == null)

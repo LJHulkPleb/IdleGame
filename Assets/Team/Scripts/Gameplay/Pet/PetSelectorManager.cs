@@ -55,9 +55,14 @@ public class PetSelectorManager : MonoBehaviour
     public Button RightArrowButton;
     public Button ConfirmButton;
 
+    [Header("Rotation Buttons")]
+    public Button RotateLeftButton;
+    public Button RotateRightButton;
+
     private int m_CurrentPetIndex = 0;
     private GameObject m_CurrentPetInstance;
     private PetStats[] m_PetStats;
+    private const float m_RotationStep = 15f;
 
     private void Start()
     {
@@ -143,6 +148,9 @@ public class PetSelectorManager : MonoBehaviour
 
         HealthPlusButton.onClick.AddListener(() => AllocateStat("Health"));
         HealthMinusButton.onClick.AddListener(() => DeallocateStat("Health"));
+
+        RotateLeftButton.onClick.AddListener(() => RotatePet(-m_RotationStep));
+        RotateRightButton.onClick.AddListener(() => RotatePet(m_RotationStep));
     }
 
     private void CyclePet(int direction)
@@ -156,6 +164,14 @@ public class PetSelectorManager : MonoBehaviour
         arrowButton.Play();
 
         DisplayPet(m_CurrentPetIndex);
+    }
+
+    private void RotatePet(float angle)
+    {
+        if (m_CurrentPetInstance != null)
+        {
+            m_CurrentPetInstance.transform.Rotate(Vector3.up, angle);
+        }
     }
 
     private void AllocateStat(string statType)
