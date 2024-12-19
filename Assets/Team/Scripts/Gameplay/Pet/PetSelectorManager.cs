@@ -151,11 +151,19 @@ public class PetSelectorManager : MonoBehaviour
         if (m_CurrentPetIndex < 0)
             m_CurrentPetIndex = PetPrefabs.Count - 1;
 
+        AudioSource arrowButton = RightArrowButton.GetComponent<AudioSource>();
+
+        arrowButton.Play();
+
         DisplayPet(m_CurrentPetIndex);
     }
 
     private void AllocateStat(string statType)
     {
+        AudioSource allocateSound = StrengthPlusButton.GetComponent<AudioSource>();
+
+        allocateSound.Play();
+
         if (m_AvailablePoints <= 0) return;
 
         PetStats selectedPet = m_PetStats[m_CurrentPetIndex];
@@ -181,6 +189,10 @@ public class PetSelectorManager : MonoBehaviour
 
     private void DeallocateStat(string statType)
     {
+        AudioSource deallocateSound = StrengthMinusButton.GetComponent<AudioSource>();
+
+        deallocateSound.Play();
+
         PetStats selectedPet = m_PetStats[m_CurrentPetIndex];
         switch (statType)
         {
@@ -226,6 +238,12 @@ public class PetSelectorManager : MonoBehaviour
 
     private void ConfirmSelection()
     {
+        AudioSource confirmSound = ConfirmButton.GetComponent<AudioSource>();
+
+        float loadDelay = confirmSound.clip.length;
+
+        confirmSound.Play();
+
         PetStats selectedPetStats = m_PetStats[m_CurrentPetIndex];
         string chosenName = NameInputField.text;
         if (string.IsNullOrEmpty(chosenName))
@@ -257,7 +275,14 @@ public class PetSelectorManager : MonoBehaviour
         SelectedPetManager.Instance.SetSelectedPet(selectedPet, chosenName, selectedPetStats);
 
         Debug.Log($"Selected Pet: {chosenName}, Stats: Str-{selectedPetStats.Strength}, Def-{selectedPetStats.Defense}, Spd-{selectedPetStats.Speed}, Hp-{selectedPetStats.Health}");
+        
 
+
+        Invoke(nameof(LoadFarmScene), loadDelay);
+    }
+
+    private void LoadFarmScene()
+    {
         SceneManager.LoadScene("FarmScene");
     }
 }
