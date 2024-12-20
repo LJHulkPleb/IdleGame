@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class PlayerFoodManager : MonoBehaviour
 {
@@ -15,9 +16,18 @@ public class PlayerFoodManager : MonoBehaviour
     [SerializeField] private TMP_Text _vitalisText;
 
     private Dictionary<string, (TMP_Text textField, string prefix)> cropTextFields;
+    private bool isFarmScene;
 
     private void Start()
     {
+        isFarmScene = SceneManager.GetActiveScene().name == "FarmScene";
+
+        if (!isFarmScene)
+        {
+            Debug.Log("Not in FarmScene. Skipping crop text updates.");
+            return;
+        }
+
         cropTextFields = new Dictionary<string, (TMP_Text, string)>
         {
             { "Health", (_healthText, "Health: ") },
@@ -29,7 +39,7 @@ public class PlayerFoodManager : MonoBehaviour
 
         UpdateCropTexts();
     }
-    
+
     public void AddCrop(Crop crop, int amount)
     {
         CropInfo existingCrop = Crops.Find(c => c.Crop == crop);
@@ -43,7 +53,10 @@ public class PlayerFoodManager : MonoBehaviour
         }
         Debug.Log("Added " + amount + " units of " + crop.CropName + ". Current amount: " + Crops.Find(c => c.Crop == crop).Amount);
 
-        UpdateCropTexts();
+        if (isFarmScene)
+        {
+            UpdateCropTexts();
+        }
     }
 
     public bool HasCrop(Crop crop, int requiredAmount)
@@ -71,11 +84,16 @@ public class PlayerFoodManager : MonoBehaviour
             Debug.Log("Not enough " + crop.CropName + " to use.");
         }
 
-        UpdateCropTexts();
+        if (isFarmScene)
+        {
+            UpdateCropTexts();
+        }
     }
 
     private void UpdateCropTexts()
     {
+        if (!isFarmScene) return;
+
         foreach (var entry in cropTextFields.Values)
         {
             entry.textField.text = entry.prefix + "0";
