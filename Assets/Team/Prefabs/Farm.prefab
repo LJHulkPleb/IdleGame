@@ -167,6 +167,7 @@ GameObject:
   - component: {fileID: 6622516427242890664}
   - component: {fileID: 5456015064269256627}
   - component: {fileID: 6218658821321924356}
+  - component: {fileID: 799077760776948858}
   m_Layer: 0
   m_Name: Farm
   m_TagString: Interactable
@@ -209,6 +210,59 @@ MonoBehaviour:
   m_CurrentCapacity: 0
   m_MaxCapacity: 10
   m_UpgradeCost: 20
+  _statusText: {fileID: 0}
+  upgradeSound: {fileID: 0}
+  harvestSound: {fileID: 0}
+  spawnPoints:
+  - {fileID: 7126919679935636896}
+  - {fileID: 73276737454436802}
+  - {fileID: 5073610039078571116}
+  - {fileID: 5046305610585830082}
+  - {fileID: 315522947263651625}
+  - {fileID: 695385410342401883}
+  - {fileID: 5154880837316759703}
+  - {fileID: 1946104070597804948}
+  - {fileID: 4594208322561928368}
+  - {fileID: 3411021298334196486}
+  - {fileID: 3574663968147437576}
+  - {fileID: 8772861930354341764}
+  - {fileID: 7494404094485268982}
+  - {fileID: 8406591813732746855}
+  - {fileID: 7435631891346260721}
+  - {fileID: 8094054191201612771}
+  - {fileID: 1185021451369087961}
+  - {fileID: 4890671638799473301}
+  - {fileID: 7400673288746563318}
+  - {fileID: 1838726249434332680}
+  - {fileID: 300562795409281255}
+  - {fileID: 5672945174343754402}
+  - {fileID: 7556546844143442066}
+  - {fileID: 8071999097242254318}
+  - {fileID: 1329585994119069033}
+  - {fileID: 8663849670437947306}
+  - {fileID: 3430214766541738079}
+  - {fileID: 531787710904988253}
+  - {fileID: 1599785517333228949}
+  - {fileID: 5864073317438550368}
+  - {fileID: 969461297776651712}
+  - {fileID: 5159601677166994710}
+  - {fileID: 4269440413578473021}
+  - {fileID: 8330498084937135352}
+  - {fileID: 4622060528584243815}
+  - {fileID: 2665466471543820134}
+  - {fileID: 4188582703448283504}
+  - {fileID: 8602956810779827393}
+  - {fileID: 4690114583887355201}
+  - {fileID: 6944769481654170178}
+  - {fileID: 7864399184452435715}
+  - {fileID: 2179044733366131411}
+  - {fileID: 5343761149134462981}
+  - {fileID: 8788834336868733178}
+  - {fileID: 8866880954904891268}
+  - {fileID: 4544678611575944273}
+  - {fileID: 3211937815618523778}
+  - {fileID: 2671850784548143225}
+  - {fileID: 3789975321420984573}
   ListOfCrops:
   - {fileID: 11400000, guid: e7afd937665495440b563d0ee30fac1e, type: 2}
   - {fileID: 11400000, guid: 9e8a9f52129198a448e67f56e577ea60, type: 2}
@@ -339,6 +393,102 @@ MonoBehaviour:
   m_IgnoreFromBuild: 0
   m_ApplyToChildren: 1
   m_AffectedAgents: ffffffff
+--- !u!82 &799077760776948858
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3206176472332504549}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &4485208436460710998
 GameObject:
   m_ObjectHideFlags: 0
