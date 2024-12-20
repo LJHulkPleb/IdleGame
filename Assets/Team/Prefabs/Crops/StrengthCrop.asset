@@ -16,6 +16,7 @@ MonoBehaviour:
   m_UpgradeCost: 5
   m_CurrentLevel: 1
   m_FoodPerSecond: 1
+  m_CropModelPrefab: {fileID: 5138731509664054283, guid: f2caead53f1d8a543aac421561b2745f, type: 3}
   m_AttributeBoosts:
   - AttributeType: 0
     BoostAmount: 1

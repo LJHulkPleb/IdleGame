@@ -9,6 +9,7 @@ public class Crop : ScriptableObject
     [SerializeField] private int m_UpgradeCost = 5;
     [SerializeField] private int m_CurrentLevel = 1;
     [SerializeField] private int m_FoodPerSecond = 1;
+    [SerializeField] private GameObject m_CropModelPrefab;
     [SerializeField] private AttributeBoostEntry[] m_AttributeBoosts = new AttributeBoostEntry[4]{
         new AttributeBoostEntry { AttributeType = AttributeType.Strength, BoostAmount = 0 },
         new AttributeBoostEntry { AttributeType = AttributeType.Defense, BoostAmount = 0 },
@@ -21,6 +22,7 @@ public class Crop : ScriptableObject
     public int CurrentLevel { get => m_CurrentLevel; set => m_CurrentLevel = value; }
     public int FoodPerSecond { get => m_FoodPerSecond; set => m_FoodPerSecond = value; }
     public AttributeBoostEntry[] AttributeBoosts { get => m_AttributeBoosts; set => m_AttributeBoosts = value; }
+    public GameObject CropModelPrefab { get => m_CropModelPrefab; set => m_CropModelPrefab = value; }
 
     private void OnEnable()
     {

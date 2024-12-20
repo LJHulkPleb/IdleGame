@@ -9,6 +9,7 @@ TagManager:
   - Farm
   - Tournament
   - Interactable
+  - CropSpawnMarker
   layers:
   - Default
   - TransparentFX
